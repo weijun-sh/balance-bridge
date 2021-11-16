@@ -1,0 +1,16 @@
+#
+[Email]
+Time = [9] # 9 o'clock, ',' to split
+
+[Gas]
+MinimumGas = 0.4
+
+[Rpc]
+CELO="https://forno.celo.org"
+
+[[Bridge]]
+Msg="1, BTC2BSC=http://IP:port"
+Important=false
+Address=["BTC:0x...",
+         "BSC:0x..."]
+
