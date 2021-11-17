@@ -15,6 +15,7 @@ import (
 
 type ethConfig struct {
 	Result string `bson: "result"`
+	Error interface{} `bson: "error"`
 }
 
 func getBalance4ETH(url, address string) (string, bool) {
@@ -29,28 +30,38 @@ func getBalance4ETH(url, address string) (string, bool) {
 		fmt.Println(err.Error())
 		return "", false
 	}
-	reader := bytes.NewReader(bytesData)
-	resp, err := http.Post(url, "application/json", reader)
-	if err != nil {
-		fmt.Println(err.Error())
-		return "", false
-	}
-	defer resp.Body.Close()
-
-	//fmt.Printf("r: %v\n", resp)
-	body, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return "", false
-	}
 	basket := ethConfig{}
-	err = json.Unmarshal(body, &basket)
-	if err != nil {
-		fmt.Println(err)
-		return "", false
+	for i := 0; i < 3; i++ {
+		reader := bytes.NewReader(bytesData)
+		resp, err := http.Post(url, "application/json", reader)
+		if err != nil {
+			fmt.Println(err.Error())
+			return "", false
+		}
+		defer resp.Body.Close()
+
+		//fmt.Printf("resp: %#v, resp.Body: %#v\n", resp, resp.Body)
+		body, err := ioutil.ReadAll(resp.Body)
+		//fmt.Printf("body: %v, string: %v\n", body, string(body))
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return "", false
+		}
+		err = json.Unmarshal(body, &basket)
+		if err != nil {
+			fmt.Println(err)
+			return "", false
+		}
+		//fmt.Printf("%v basket.Result: %v, error: %v\n", i, basket.Result, basket.Error)
+		if basket.Error != nil {
+			//fmt.Printf("* Error *\n\n")
+			basket.Error = nil
+			continue
+		} else {
+			break
+		}
 	}
-	//fmt.Printf("b: %v\n", basket)
 	b, g := getBalance4String(basket.Result, 18)
 	return b, g
 }
