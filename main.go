@@ -318,6 +318,9 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "TLOS":
 		b, g = getBalance4ETH(rpc.TLOS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "TLOS")
+	case "TERRA":
+		b, g = getBalance4ETH(rpc.TERRA, addr)
+		e = fmt.Sprintf("  %v %12v %v", addr, b, "UST")
 	default:
 		return
 	}

@@ -98,6 +98,7 @@ type rpcConfig struct {
 	OETH string
 	CRO string
 	TLOS string
+	TERRA string
 }
 
 type DecimalConfig struct {
