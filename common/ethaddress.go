@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/weijun-sh/balance/common/hexutil"
+	"github.com/weijun-sh/balance-bridge/common/hexutil"
 	"golang.org/x/crypto/sha3"
 )
 

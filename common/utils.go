@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	cmath "github.com/weijun-sh/balance/common/math"
+	cmath "github.com/weijun-sh/balance-bridge/common/math"
 	"golang.org/x/crypto/sha3"
 )
 

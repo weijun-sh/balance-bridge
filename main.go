@@ -12,7 +12,7 @@ import (
 	"strings"
 	"strconv"
 	"time"
-	com "github.com/weijun-sh/balance/common"
+	com "github.com/weijun-sh/balance-bridge/common"
 	ethereum "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"

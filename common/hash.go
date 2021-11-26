@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"reflect"
 
-	"github.com/weijun-sh/balance/common/hexutil"
+	"github.com/weijun-sh/balance-bridge/common/hexutil"
 )
 
 // Lengths of hashes in bytes.
