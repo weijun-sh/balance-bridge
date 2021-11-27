@@ -99,6 +99,7 @@ type rpcConfig struct {
 	CRO string
 	TLOS string
 	TERRA string
+	BOBA string
 }
 
 type DecimalConfig struct {
