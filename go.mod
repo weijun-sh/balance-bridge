@@ -1,4 +1,4 @@
-module github.com/weijun-sh/balance
+module github.com/weijun-sh/balance-bridge
 
 go 1.16
 
