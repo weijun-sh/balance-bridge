@@ -100,6 +100,7 @@ type rpcConfig struct {
 	TLOS string
 	TERRA string
 	BOBA string
+	FUSE string
 }
 
 type DecimalConfig struct {
