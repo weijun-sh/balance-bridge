@@ -102,6 +102,7 @@ type rpcConfig struct {
 	BOBA string
 	FUSE string
 	SYS string
+	AURORA string
 }
 
 type DecimalConfig struct {
