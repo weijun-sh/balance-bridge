@@ -103,6 +103,8 @@ type rpcConfig struct {
 	FUSE string
 	SYS string
 	AURORA string
+	METIS string
+	MOONBEAM string
 }
 
 type DecimalConfig struct {
