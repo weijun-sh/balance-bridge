@@ -105,6 +105,7 @@ type rpcConfig struct {
 	AURORA string
 	METIS string
 	MOONBEAM string
+	ASTAR string
 }
 
 type DecimalConfig struct {

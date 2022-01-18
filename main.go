@@ -246,6 +246,21 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "BTC":
 		b, g = getBalance4BTC(rpc.BTC, addr)
 		e = fmt.Sprintf("  %v         %12v %v", addr, b, chainU)
+	case "LTC":
+		slice := strings.Split(addr, "-")
+		addr1 := slice[0]
+		addr2 := slice[1]
+		b, g = getBalance4BTC(rpc.LTC, addr1)
+		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
+	case "BLOCK":
+		b, g = getBalance4BLOCK(rpc.BLOCK, addr)
+		e = fmt.Sprintf("  %v         %12v %v", addr, b, chainU)
+	case "COLX":
+		slice := strings.Split(addr, "-")
+		addr1 := slice[0]
+		addr2 := slice[1]
+		b, g  = getBalance4BTC(rpc.COLX, addr1)
+		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
 	case "ETH":
 		b, g = getBalance4ETH(rpc.ETH, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
@@ -261,15 +276,6 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "HT":
 		b, g = getBalance4ETH(rpc.HT, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
-	case "LTC":
-		slice := strings.Split(addr, "-")
-		addr1 := slice[0]
-		addr2 := slice[1]
-		b, g = getBalance4BTC(rpc.LTC, addr1)
-		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
-	case "BLOCK":
-		b, g = getBalance4BLOCK(rpc.BLOCK, addr)
-		e = fmt.Sprintf("  %v         %12v %v", addr, b, chainU)
 	case "MATIC":
 		b, g = getBalance4ETH(rpc.MATIC, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
@@ -282,12 +288,6 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "HMY":
 		b, g = getBalance4ETH(rpc.HMY, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
-	case "COLX":
-		slice := strings.Split(addr, "-")
-		addr1 := slice[0]
-		addr2 := slice[1]
-		b, g  = getBalance4BTC(rpc.COLX, addr1)
-		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
 	case "ARB":
 		b, g = getBalance4ETH(rpc.ARB, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ETH(ARB)")
@@ -339,6 +339,9 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "MOONBEAM":
 		b, g = getBalance4ETH(rpc.MOONBEAM, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "GLMR")
+	case "ASTAR":
+		b, g = getBalance4ETH(rpc.ASTAR, addr)
+		e = fmt.Sprintf("  %v %12v %v", addr, b, "ASTAR")
 	default:
 		return
 	}
