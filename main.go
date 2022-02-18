@@ -345,6 +345,15 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "ROSE":
 		b, g = getBalance4ETH(rpc.ROSE, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ROSE")
+	case "VELAS":
+		b, g = getBalance4ETH(rpc.VELAS, addr)
+		e = fmt.Sprintf("  %v %12v %v", addr, b, "VLX")
+	case "OASIS":
+		b, g = getBalance4ETH(rpc.OASIS, addr)
+		e = fmt.Sprintf("  %v %12v %v", addr, b, "ROSE")
+	case "OPTIMISTIC":
+		b, g = getBalance4ETH(rpc.OPTIMISTIC, addr)
+		e = fmt.Sprintf("  %v %12v %v", addr, b, "OETH")
 	default:
 		return
 	}

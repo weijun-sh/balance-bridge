@@ -107,6 +107,9 @@ type rpcConfig struct {
 	MOONBEAM string
 	ASTAR string
 	ROSE string
+	VELAS string
+	OASIS string
+	OPTIMISTIC string
 }
 
 type DecimalConfig struct {
