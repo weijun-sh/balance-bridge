@@ -110,6 +110,8 @@ type rpcConfig struct {
 	VELAS string
 	OASIS string
 	OPTIMISTIC string
+	CLV string
+	XRP string
 }
 
 type DecimalConfig struct {
