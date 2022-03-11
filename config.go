@@ -112,6 +112,7 @@ type rpcConfig struct {
 	OPTIMISTIC string
 	CLV string
 	XRP string
+	MIKO string
 }
 
 type DecimalConfig struct {
