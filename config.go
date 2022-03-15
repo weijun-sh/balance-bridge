@@ -113,6 +113,7 @@ type rpcConfig struct {
 	CLV string
 	XRP string
 	MIKO string
+	NEBULAS string
 }
 
 type DecimalConfig struct {

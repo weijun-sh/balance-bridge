@@ -360,6 +360,9 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "MIKO":
 		b, g = getBalance4ETH(rpc.MIKO, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "MilkADA")
+	case "NEBULAS":
+		b, g = getBalance4ETH(rpc.NEBULAS, addr)
+		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "NEBULAS")
 	case "XRP": // Different
 		b, g = getBalance4XRP(rpc.XRP, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "XRP")
