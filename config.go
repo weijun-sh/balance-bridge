@@ -114,6 +114,8 @@ type rpcConfig struct {
 	XRP string
 	MIKO string
 	NEBULAS string
+	REI string
+	CONFLUX string
 }
 
 type DecimalConfig struct {
