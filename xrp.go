@@ -34,7 +34,7 @@ type xrpParams struct {
 	Queue bool `json: "queue"`
 }
 
-func getBalance4XRP(url, address string) (string, bool) {
+func getBalance4XRP(chain, url, address string) (string, string, bool) {
 	//fmt.Printf("getBalance4XRP, url: %v, address: %v\n", url, address)
 	data := "{\"method\":\"account_info\",\"params\":[{\"account\":\""+ address+"\",\"strict\":true,\"ledger_index\":\"current\",\"queue\":true}]}"
 	basket := xrpConfig{}
@@ -43,7 +43,7 @@ func getBalance4XRP(url, address string) (string, bool) {
 		resp, err := http.Post(url, "application/json", reader)
 		if err != nil {
 			fmt.Println(err.Error())
-			return "", false
+			return "", "", false
 		}
 		defer resp.Body.Close()
 
@@ -53,19 +53,19 @@ func getBalance4XRP(url, address string) (string, bool) {
 
 		if err != nil {
 			fmt.Println(err.Error())
-			return "", false
+			return "", "", false
 		}
 		err = json.Unmarshal(body, &basket)
 		if err != nil {
 			fmt.Println(err)
-			return "", false
+			return "", "", false
 		}
 		//fmt.Printf("%v basket.Result: %v\n", i, basket.Result)
 		if basket.Result.Status == "success" {
 			break
 		}
 	}
-	b, g := getBalance4String(basket.Result.Account_data.Balance, 6)
-	return b, g
+	b, m, g := getBalance4String(chain, basket.Result.Account_data.Balance, 6)
+	return b, m, g
 }
 

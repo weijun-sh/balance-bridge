@@ -3,7 +3,11 @@
 Time = [9] # 9 o'clock, ',' to split
 
 [Gas]
-MinimumGas = 0.4
+MinimumGas = 0.4 # if ChainMinimumGas not set
+# chain:gas - string:float64
+ChainMinimumGas = [
+	"CRO:10.0",
+]
 
 [Rpc]
 CELO="https://forno.celo.org"

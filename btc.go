@@ -22,13 +22,13 @@ type btcStatsConfig struct {
 	Tx_count         uint64 `json: "tx_count"`
 }
 
-func getBalance4BTC(urlOrg, address string) (string, bool) {
+func getBalance4BTC(chain, urlOrg, address string) (string, string, bool) {
 	gas := false
 	url := fmt.Sprintf("%v/address/%v", urlOrg, address)
 	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
-		return "", false
+		return "", "", false
 	}
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
@@ -38,15 +38,20 @@ func getBalance4BTC(urlOrg, address string) (string, bool) {
 	err = json.Unmarshal(body, &basket)
 	if err != nil {
 		fmt.Println(err)
-		return "", false
+		return "", "", false
 	}
 	funded := basket.Chain_stats.Funded_txo_sum
 	spent := basket.Chain_stats.Spent_txo_sum
 	balance := float64(funded-spent) / 100000000
-	if balance < minimumGas {
+	mg := minimumGas
+	mingas := GetChainMinimumGas(chain)
+	if mingas > 0.0 {
+		mg = mingas
+	}
+	if balance < mg {
 		gas = true
 	}
-	return fmt.Sprintf("%0.4f", balance), gas
+	return fmt.Sprintf("%0.4f", balance), fmt.Sprintf("%0.1f", mg), gas
 	//f := fmt.Sprintf("%%10.%vf", 8)
 	//return fmt.Sprintf(f, balance), gas
 }
@@ -59,7 +64,7 @@ type utxoConfig struct {
 	Value float64 `json: "value"`
 }
 
-func getBalance4BLOCK(url, address string) (string, bool) {
+func getBalance4BLOCK(chain, url, address string) (string, string, bool) {
 	gas := false
 	//fmt.Printf("getBalance4ETH, url: %v, address: %v\n", url, address)
 	data := make(map[string]interface{})
@@ -70,13 +75,13 @@ func getBalance4BLOCK(url, address string) (string, bool) {
 	bytesData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err.Error())
-		return "", false
+		return "", "", false
 	}
 	reader := bytes.NewReader(bytesData)
 	resp, err := http.Post(url, "application/json", reader)
 	if err != nil {
 		fmt.Println(err.Error())
-		return "", false
+		return "", "", false
 	}
 	defer resp.Body.Close()
 
@@ -84,21 +89,26 @@ func getBalance4BLOCK(url, address string) (string, bool) {
 
 	if err != nil {
 		fmt.Println(err.Error())
-		return "", false
+		return "", "", false
 	}
 	basket := blockConfig{}
 	err = json.Unmarshal(body, &basket)
 	if err != nil {
 		fmt.Println(err)
-		return "", false
+		return "", "", false
 	}
 	b := 0.0
 	for _, v := range basket.Utxos {
 		b += v.Value
 	}
-	if b != 0.0 && b < minimumGas {
+	mg := minimumGas
+	mingas := GetChainMinimumGas(chain)
+	if mingas > 0.0 {
+		mg = mingas
+	}
+	if b != 0.0 && b < mg {
 		gas = true
 	}
-	return fmt.Sprintf("%0.4f", b), gas
+	return fmt.Sprintf("%0.4f", b), fmt.Sprintf("%0.1f", mg), gas
 }
 

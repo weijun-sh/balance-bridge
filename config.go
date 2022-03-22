@@ -4,10 +4,17 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"strconv"
+	"strings"
+
 	"github.com/BurntSushi/toml"
 )
-var decimal map[string]*big.Int = make(map[string]*big.Int)
-var emailTimeHour *[]uint64
+
+var (
+	chainMinimumGas map[string]float64 = make(map[string]float64)
+	decimal map[string]*big.Int = make(map[string]*big.Int)
+	emailTimeHour *[]uint64
+)
 
 func LoadDecimalConfig(filePath string) {
         if !FileExist(filePath) {
@@ -44,8 +51,30 @@ func LoadConfig(filePath string) *BridgeConfig {
 		return nil
         }
 
+	initChainMinimumGas(config.Gas.ChainMinimumGas)
 	emailTimeHour = config.Email.Time
         return config
+}
+
+func initChainMinimumGas(minGas []string) {
+	for _, chainGas := range minGas {
+		slice := strings.Split(chainGas, ":")
+		if len(slice) != 2 {
+			fmt.Printf("error: ChainMinimumGas '%v' length != 2\n", chainGas)
+			continue
+		}
+		gasFloat, err := strconv.ParseFloat(slice[1], 64)
+		if err != nil {
+			fmt.Printf("error: ChainMinimumGas '%v' parse gas err: %v\n", chainGas, err)
+			continue
+		}
+		chainU := strings.ToUpper(slice[0])
+		chainMinimumGas[chainU] = gasFloat
+	}
+}
+
+func GetChainMinimumGas(chain string) float64 {
+	return chainMinimumGas[chain]
 }
 
 func GetEmailTime() *[]uint64 {
@@ -65,6 +94,7 @@ type emailConfig struct {
 
 type gasConfig struct {
 	MinimumGas float64
+	ChainMinimumGas []string
 }
 
 type AddressConfig struct {

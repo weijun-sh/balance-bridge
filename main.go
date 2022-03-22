@@ -77,7 +77,7 @@ func main() {
 	var j int = 0
 	fmt.Printf("%v\n", time.Now().Format("2006-01-02 15:04:05"))
 	fmt.Printf("ps. update every 30 minutes\n")
-	fmt.Printf("ps. email time: %v o'clock everyday (balance < %v)\n", *emailH, minimumGas)
+	fmt.Printf("ps. email time: %v o'clock everyday\n", *emailH)
 	fmt.Printf("===============================================================\n")
 	fmt.Printf("                   BALANCE  OF  FEE(BRIDGE)                    \n")
 	fmt.Printf("===============================================================\n")
@@ -104,7 +104,10 @@ func main() {
 		//fmt.Println()
 	}
 	fmt.Printf("===============================================================\n")
-	fmt.Printf("* - important")
+	fmt.Printf("* - important\n")
+	fmt.Printf("\n---- min GAS CONFIG ----\n")
+	fmt.Printf("minGas: %v (if chain not set)\n", config.Gas.MinimumGas)
+	fmt.Printf("chainMinGas: %v\n", config.Gas.ChainMinimumGas)
 	defer errf.Close()
 	//if sendEmail { // insufficientGas and balance changed
 	//	os.Exit(1)
@@ -241,136 +244,137 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	chainU := strings.ToUpper(chain)
 	b := ""
 	e := ""
+	m := ""
 	g := false
 	switch chainU {
 	case "BTC":
-		b, g = getBalance4BTC(rpc.BTC, addr)
+		b, m, g = getBalance4BTC(chainU, rpc.BTC, addr)
 		e = fmt.Sprintf("  %v         %12v %v", addr, b, chainU)
 	case "LTC":
 		slice := strings.Split(addr, "-")
 		addr1 := slice[0]
 		addr2 := slice[1]
-		b, g = getBalance4BTC(rpc.LTC, addr1)
+		b, m, g = getBalance4BTC(chainU, rpc.LTC, addr1)
 		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
 	case "BLOCK":
-		b, g = getBalance4BLOCK(rpc.BLOCK, addr)
+		b, m, g = getBalance4BLOCK(chainU, rpc.BLOCK, addr)
 		e = fmt.Sprintf("  %v         %12v %v", addr, b, chainU)
 	case "COLX":
 		slice := strings.Split(addr, "-")
 		addr1 := slice[0]
 		addr2 := slice[1]
-		b, g  = getBalance4BTC(rpc.COLX, addr1)
+		b, m, g  = getBalance4BTC(chainU, rpc.COLX, addr1)
 		e = fmt.Sprintf("  %v         %12v %v", addr2, b, chainU)
 	case "ETH":
-		b, g = getBalance4ETH(rpc.ETH, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.ETH, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "FSN":
-		b, g = getBalance4ETH(rpc.FSN, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.FSN, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "BSC":
-		b, g = getBalance4ETH(rpc.BSC, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.BSC, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "BNB")
 	case "FTM":
-		b, g = getBalance4ETH(rpc.FTM, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.FTM, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "HT":
-		b, g = getBalance4ETH(rpc.HT, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.HT, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "MATIC":
-		b, g = getBalance4ETH(rpc.MATIC, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.MATIC, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "XDAI":
-		b, g = getBalance4ETH(rpc.XDAI, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.XDAI, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "AVAX":
-		b, g = getBalance4ETH(rpc.AVAX, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.AVAX, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "HMY":
-		b, g = getBalance4ETH(rpc.HMY, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.HMY, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "ARB":
-		b, g = getBalance4ETH(rpc.ARB, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.ARB, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ETH(ARB)")
 	case "KCS":
-		b, g = getBalance4ETH(rpc.KCS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.KCS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, chainU)
 	case "OKEX":
-		b, g = getBalance4ETH(rpc.OKEX, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.OKEX, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "OKT")
 	case "MOON":
-		b, g = getBalance4ETH(rpc.MOON, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.MOON, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "MOBR")
 	case "IOTEX":
-		b, g = getBalance4ETH(rpc.IOTEX, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.IOTEX, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "IOTX")
 	case "SHI":
-		b, g = getBalance4ETH(rpc.SHI, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.SHI, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "SDN")
 	case "CELO":
-		b, g = getBalance4ETH(rpc.CELO, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.CELO, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "CELO")
 	case "OETH":
-		b, g = getBalance4ETH(rpc.OETH, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.OETH, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "OETH")
 	case "CRO":
-		b, g = getBalance4ETH(rpc.CRO, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.CRO, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "CRO")
 	case "TLOS":
-		b, g = getBalance4ETH(rpc.TLOS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.TLOS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "TLOS")
 	case "TERRA":
-		b, g = getBalance4ETH(rpc.TERRA, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.TERRA, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "UST")
 	case "BOBA":
-		b, g = getBalance4ETH(rpc.BOBA, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.BOBA, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "BOBA")
 	case "FUSE":
-		b, g = getBalance4ETH(rpc.FUSE, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.FUSE, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "FUSE")
 	case "SYS":
-		b, g = getBalance4ETH(rpc.SYS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.SYS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "SYS")
 	case "AURORA":
-		b, g = getBalance4ETH(rpc.AURORA, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.AURORA, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ETH(AURORA)")
 	case "METIS":
-		b, g = getBalance4ETH(rpc.METIS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.METIS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "METIS")
 	case "MOONBEAM":
-		b, g = getBalance4ETH(rpc.MOONBEAM, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.MOONBEAM, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "GLMR")
 	case "ASTAR":
-		b, g = getBalance4ETH(rpc.ASTAR, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.ASTAR, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ASTAR")
 	case "ROSE":
-		b, g = getBalance4ETH(rpc.ROSE, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.ROSE, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ROSE")
 	case "VELAS":
-		b, g = getBalance4ETH(rpc.VELAS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.VELAS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "VLX")
 	case "OASIS":
-		b, g = getBalance4ETH(rpc.OASIS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.OASIS, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "ROSE")
 	case "OPTIMISTIC":
-		b, g = getBalance4ETH(rpc.OPTIMISTIC, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.OPTIMISTIC, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "OETH")
 	case "CLV":
-		b, g = getBalance4ETH(rpc.CLV, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.CLV, addr)
 		e = fmt.Sprintf("  %v %12v %v", addr, b, "CLV")
 	case "MIKO":
-		b, g = getBalance4ETH(rpc.MIKO, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.MIKO, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "MilkADA")
 	case "NEBULAS":
-		b, g = getBalance4ETH(rpc.NEBULAS, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.NEBULAS, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "NEBULAS")
 	case "REI":
-		b, g = getBalance4ETH(rpc.REI, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.REI, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "REI")
 	case "CONFLUX":
-		b, g = getBalance4ETH(rpc.CONFLUX, addr)
+		b, m, g = getBalance4ETH(chainU, rpc.CONFLUX, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "CFX")
 	case "XRP": // Different
-		b, g = getBalance4XRP(rpc.XRP, addr)
+		b, m, g = getBalance4XRP(chainU, rpc.XRP, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "XRP")
 	default:
 		return
@@ -380,11 +384,11 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 		if imp {
 			io.WriteString(errf, errRet)
 			io.WriteString(errf, e)
-			ee := fmt.Sprintf("      * ( < %v )\n", minimumGas)
+			ee := fmt.Sprintf("      * ( < %v )\n", m)
 			io.WriteString(errf, ee)
-			e = fmt.Sprintf("%v     * ( < %v )", e, minimumGas)
+			e = fmt.Sprintf("%v     * ( < %v )", e, m)
 		} else {
-			e = fmt.Sprintf("%v     ( < %v )", e, minimumGas)
+			e = fmt.Sprintf("%v     ( < %v )", e, m)
 		}
 		// leveldb
 		//key := fmt.Sprintf("%v-%v", chain, addr)

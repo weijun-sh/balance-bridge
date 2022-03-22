@@ -18,7 +18,7 @@ type ethConfig struct {
 	Error interface{} `bson: "error"`
 }
 
-func getBalance4ETH(url, address string) (string, bool) {
+func getBalance4ETH(chain, url, address string) (string, string, bool) {
 	//fmt.Printf("getBalance4ETH, url: %v, address: %v\n", url, address)
 	data := make(map[string]interface{})
 	data["method"] = "eth_getBalance"
@@ -28,7 +28,7 @@ func getBalance4ETH(url, address string) (string, bool) {
 	bytesData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err.Error())
-		return "", false
+		return "", "", false
 	}
 	basket := ethConfig{}
 	for i := 0; i < 3; i++ {
@@ -36,7 +36,7 @@ func getBalance4ETH(url, address string) (string, bool) {
 		resp, err := http.Post(url, "application/json", reader)
 		if err != nil {
 			fmt.Println(err.Error())
-			return "", false
+			return "", "", false
 		}
 		defer resp.Body.Close()
 
@@ -46,12 +46,12 @@ func getBalance4ETH(url, address string) (string, bool) {
 
 		if err != nil {
 			fmt.Println(err.Error())
-			return "", false
+			return "", "", false
 		}
 		err = json.Unmarshal(body, &basket)
 		if err != nil {
 			fmt.Println(err)
-			return "", false
+			return "", "", false
 		}
 		//fmt.Printf("%v basket.Result: %v, error: %v\n", i, basket.Result, basket.Error)
 		if basket.Error != nil {
@@ -62,20 +62,25 @@ func getBalance4ETH(url, address string) (string, bool) {
 			break
 		}
 	}
-	b, g := getBalance4String(basket.Result, 18)
-	return b, g
+	b, m, g := getBalance4String(chain, basket.Result, 18)
+	return b, m, g
 }
 
-func getBalance4String(balance string, d int) (string, bool) {
+func getBalance4String(chain, balance string, d int) (string, string, bool) {
 	gas := false
 	fbalance := new(big.Float)
 	fbalance.SetString(balance)
 	ethValue := new(big.Float).Quo(fbalance, big.NewFloat(math.Pow10(d)))
 	b, _ := ethValue.Float64()
-	if b < minimumGas {
+	mg := minimumGas
+	mingas := GetChainMinimumGas(chain)
+	if mingas > 0.0 {
+		mg = mingas
+	}
+	if b < mg {
 		gas = true
 	}
 	//f := fmt.Sprintf("%%18.%vf", d)
 	//return fmt.Sprintf(f, b), gas
-	return fmt.Sprintf("%0.4f", b), gas
+	return fmt.Sprintf("%0.4f", b), fmt.Sprintf("%0.1f", mg), gas
 }
