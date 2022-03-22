@@ -105,6 +105,7 @@ func main() {
 	}
 	fmt.Printf("===============================================================\n")
 	fmt.Printf("* - important\n")
+	fmt.Printf("%v\n", time.Now().Format("2006-01-02 15:04:05"))
 	fmt.Printf("\n---- min GAS CONFIG ----\n")
 	fmt.Printf("minGas: %v (if chain not set)\n", config.Gas.MinimumGas)
 	fmt.Printf("chainMinGas: %v\n", config.Gas.ChainMinimumGas)
