@@ -374,6 +374,9 @@ func getBalance4Chain(rpc rpcConfig, chain, addr string, imp bool) {
 	case "CONFLUX":
 		b, m, g = getBalance4ETH(chainU, rpc.CONFLUX, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "CFX")
+	case "RSK":
+		b, m, g = getBalance4ETH(chainU, rpc.RSK, addr)
+		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "RBTC")
 	case "XRP": // Different
 		b, m, g = getBalance4XRP(chainU, rpc.XRP, addr)
 		e = fmt.Sprintf("  %-42v %12v %v", addr, b, "XRP")

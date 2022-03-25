@@ -146,6 +146,7 @@ type rpcConfig struct {
 	NEBULAS string
 	REI string
 	CONFLUX string
+	RSK string
 }
 
 type DecimalConfig struct {
