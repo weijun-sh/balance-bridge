@@ -147,6 +147,8 @@ type rpcConfig struct {
 	REI string
 	CONFLUX string
 	RSK string
+	JEWEL string
+	BTTC string
 }
 
 type DecimalConfig struct {
