@@ -149,6 +149,7 @@ type rpcConfig struct {
 	RSK string
 	JEWEL string
 	BTTC string
+	EVMOS string
 }
 
 type DecimalConfig struct {
