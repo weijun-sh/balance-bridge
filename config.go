@@ -150,6 +150,10 @@ type rpcConfig struct {
 	JEWEL string
 	BTTC string
 	EVMOS string
+	RONIN string
+	CMP string
+	DOGE string
+	ETC string
 }
 
 type DecimalConfig struct {
