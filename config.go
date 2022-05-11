@@ -154,6 +154,7 @@ type rpcConfig struct {
 	CMP string
 	DOGE string
 	ETC string
+	GATE string
 }
 
 type DecimalConfig struct {
