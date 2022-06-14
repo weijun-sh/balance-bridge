@@ -19,7 +19,7 @@ type ethConfig struct {
 }
 
 func getBalance4ETH(chain, url, address string) (string, string, bool) {
-	//fmt.Printf("getBalance4ETH, url: %v, address: %v\n", url, address)
+	//fmt.Printf("getBalance4ETH, chain: %v, url: %v, address: %v\n", chain, url, address)
 	data := make(map[string]interface{})
 	data["method"] = "eth_getBalance"
 	data["params"] = []string{address, "latest"}

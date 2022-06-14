@@ -51,6 +51,8 @@ func LoadConfig(filePath string) *BridgeConfig {
 		return nil
         }
 
+	//test := config.Gateway
+	//fmt.Printf("test: %v\n", test)
 	initChainMinimumGas(config.Gas.ChainMinimumGas)
 	emailTimeHour = config.Email.Time
         return config
@@ -84,7 +86,8 @@ func GetEmailTime() *[]uint64 {
 type BridgeConfig struct {
 	Email emailConfig
 	Gas gasConfig
-	Rpc rpcConfig
+	Gateway map[string]string // chainid key
+	ChainSymbol map[string]string // chainid key
 	Bridge []AddressConfig
 }
 

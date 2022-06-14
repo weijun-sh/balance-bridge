@@ -5,26 +5,26 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-func InitClient(url *rpcConfig) *clientRPC {
+func InitClient(gateway map[string]string) *clientRPC {
 	client := clientRPC{}
 	client.C = make(map[string]*ethclient.Client, 0)
-	//client.C["BTC"] = initClient(url.BTC)
-	client.C["ETH"] = initClient(url.ETH)
-	client.C["FSN"] = initClient(url.FSN)
-	client.C["BSC"] = initClient(url.BSC)
-	client.C["HT"] = initClient(url.HT)
-	client.C["FTM"] = initClient(url.FTM)
-	//client.C["LTC"] = initClient(url.LTC)
-	//client.C["BLOCK"] = initClient(url.BLOCK)
-	client.C["MATIC"] = initClient(url.MATIC)
-	client.C["XDAI"] = initClient(url.XDAI)
-	client.C["AVAX"] = initClient(url.AVAX)
-	//client.C["HMY"] = initClient(url.HMY)
-	//client.C["COLX"] = initClient(url.COLX)
-	client.C["ARB"] = initClient(url.ARB)
-	client.C["KCS"] = initClient(url.KCS)
-	client.C["OKEX"] = initClient(url.OKEX)
+	for id, url := range gateway {
+		if doInitClient(id) {
+			client.C[id] = initClient(url)
+		}
+	}
 	return &client
+}
+
+func doInitClient(id string) bool {
+	if id != "BTC" &&
+	   id != "LTC" &&
+	   id != "BLOCK" &&
+	   id != "HMY" &&
+	   id != "COLX" {
+		return true
+	}
+	return false
 }
 
 func initClient(gateway string) *ethclient.Client {
